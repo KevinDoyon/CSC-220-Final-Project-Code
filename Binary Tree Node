@@ -1,0 +1,76 @@
+/**
+ * Kevin Doyon & Andrew Almond
+ * 11/9/18
+ */
+
+ import java.util.*;
+ import java.io.*;
+ 
+ /* Class BTNode */
+ class BTNode<Type>
+ {    
+     BTNode left, right;
+     String data;
+     boolean there;
+ 
+     /* Constructor */
+     public BTNode()
+     {
+         left = null;
+         right = null;
+         data = null;
+     }
+     /* Constructor */
+     public BTNode(String n, boolean o)
+     {
+         left = null;
+         right = null;
+         data = n;
+         there = o;
+     }
+     /* Function to set left node */
+     public void setLeft(BTNode n)
+     {
+         left = n;
+     }
+     /* Function to set right node */ 
+     public void setRight(BTNode n)
+     {
+         right = n;
+     }
+     /* Function to get left node */
+     public BTNode getLeft()
+     {
+         return left;
+     }
+     /* Function to get right node */
+     public BTNode getRight()
+     {
+         return right;
+     }
+     /* Function to set data to node */
+     public void setData(String d)
+     {
+         data = d;
+     }
+     /* Function to get data from node */
+     public String getData()
+     {
+         return data;
+     } 
+     public boolean getThere()
+     {
+        return there;
+     } 
+     public void setThere()
+     {
+        if(there == false)
+        {
+            there = true;
+        }
+        else
+        {
+            there = false;
+        }
+     }   
+ }
