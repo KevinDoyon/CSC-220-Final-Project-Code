@@ -1,0 +1,400 @@
+/**
+ * Kevin Doyon & Andrew Almond
+ * 11/9/18
+ */
+
+import java.util.*;
+import java.io.*;
+class main
+{
+    public static void main(String[] args) throws IOException, FileNotFoundException 
+    {
+        // Variables
+        BT a = new BT<BTNode>(); //Binary Tree to search for book titles
+        //As binary trees are easy to search with, we used a binary tree to be able to quickly search for 
+        // Titles of book, and if a book has been checked out
+
+        Stack b = new Stack<String>(); //Stack for book returns
+        // As Stacks work the same as a stack of books in front of a librarian, first book set in/ last book to be checked
+        // we used stacks for checking in and out books
+
+        List<Author> d = new List<Author>(); //Linked list to hold for authors, which has a linked list of titles
+        //As linked list work similar to arrays, they were used to store our authors, these list also leave to worry about 
+        // Lenght and data styles
+
+        Books e;
+        String f;
+        String g;
+        Author i;
+        int k = 0;
+        int z = 108; // should be close to however many books there are.
+
+        // 2 arrays of books
+        // as we have met the minimum of three different data types, arrays are being used
+        // arrays help keep track of information for multiple uses, unlike the priority queue
+        // arrays are also easier to code than the other data types
+        // arrays are also easy to sort
+        Books[] bookarray = new Books[z];
+        Books[] fireDrill = new Books[z];
+
+        // more variables
+        int x = 0;
+        int w = 0;
+        String q = "0";
+
+        // imports text from file, puts in book class, puts class in list/tree/arrays
+
+        Scanner sf = new Scanner(new File("input.txt"));
+        int maxIndx = -1;
+        String text[] = new String[z];
+        while(sf.hasNext())
+        {
+            maxIndx++;
+            text[maxIndx] = sf.nextLine();
+        }
+        sf.close();
+        for(int y = 0; y < text.length;y++)
+        {
+            //splits line by commas, parses ints into ints
+            String[] name = text[y].split(", ");
+            try
+            {
+                x = Integer.parseInt(name[2]);
+                w = Integer.parseInt(name[3]);
+            }
+            catch(NumberFormatException v)
+            {
+
+            }
+            // makes class book from a line from text file
+            e = new Books(name[0], name[1],x,w);
+            d.First();
+            k=0;
+            // if author has been inserted into linked list, updates author with all of his/her books
+            // otherwise adds author to the list
+            for(int j = 0; j<d.GetSize();j++)
+            {
+                d.Next();
+                if(d.GetValue().getname().compareTo(name[1])==0)
+                {
+                    k++;
+                    i=d.GetValue();
+                    i.addbook(name[0]);
+                    d.Replace(i);
+                }   
+            }
+            if(k==0)
+            {
+                i = new Author(name[1]);
+                i.addbook(name[0]);
+                d.InsertAfter(i);              
+            }
+            //inserts books title and checked in status to binary tree
+            a.insert(e.gettitle(),e.getstatus());
+            // inserts book int arrays
+            bookarray[y]= e;
+            fireDrill[y]=e;
+        }
+        // an array of authors alphabetized
+        String v[] = new String[d.GetSize()];
+        d.First();
+        // adds authors from list to array
+        for(int u = 0;u<d.GetSize();u++)
+        {
+            d.Next();
+            v[u]=d.GetValue().getname();
+        }
+        //variables
+        String key;
+        Books keys;
+        Books keyssss;
+        int t;
+        int s;
+        // sorts authors alphabetically
+        for(t= 1; t<50; t++) //https://stackoverflow.com/questions/17432738/insertion-sort-using-string-compareto
+        {
+            key = (v[t]);
+            s = t-1;
+            while(s>=0)
+            {
+                if(key.compareTo(v[s])>0)
+                {
+                    break;
+                }
+                (v[s+1]) =(v[s]);
+                s--;
+            }
+            (v[s+1]) = key;
+        }
+        // sorts books alphabetically
+        for(t= 1; t<108; t++) //https://stackoverflow.com/questions/17432738/insertion-sort-using-string-compareto
+        {
+            keyssss = (bookarray[t]);
+            s = t-1;
+            while(s>=0)
+            {
+                if((keyssss.gettitle()).compareTo(bookarray[s].gettitle())>0)
+                {
+                    break;
+                }
+                (bookarray[s+1]) =(bookarray[s]);
+                s--;
+            }
+            (bookarray[s+1]) = keyssss;
+        }
+        // sorts books by importance
+        for(t= 1; t<108; t++) //https://stackoverflow.com/questions/17432738/insertion-sort-using-string-compareto
+        {
+            keys = (fireDrill[t]);
+            s = t-1;
+            while(s>=0)
+            {
+                if((keys.getvalue())>(fireDrill[s].getvalue()))
+                {
+                    break;
+                }
+                fireDrill[s+1] = fireDrill[s];
+                s--;
+            }
+            fireDrill[s+1] = keys;
+        }
+        //end of prep
+        // begining of while loop
+        System.out.println("Welcome to the Sci-Fi Library");
+        System.out.println(" ");
+        while(true)
+        {
+            System.out.println("There are several tasks you can perform.");
+            System.out.println("1: Search books by title.");
+            System.out.println("2: Search books by author.");
+            System.out.println("3: List books by title.");
+            System.out.println("4: List authors alphabetically.");
+            System.out.println("5: Check in books.");
+            System.out.println("6: Check out books.");
+            System.out.println("7: Exit the program");
+            System.out.println("8: FIRE!!!");
+            System.out.println(" ");
+            Scanner scan = new Scanner(System.in);
+            f = scan.nextLine();
+            System.out.println("");
+            if(f.compareTo("1")==0) // searches books by title
+            {
+                System.out.println("What book are you looking for?");
+                g = scan.nextLine();
+                System.out.println(g);
+                System.out.println("");
+                if(a.search(g)==true) // if books is in the library
+                {
+                    System.out.println("The book "+g+" is here.");
+                    if(a.searchstatus(g)==true) // if the books is checked in
+                    {
+                        System.out.println("This book has not been checked out.");
+                    }
+                    else // the books have been checked out
+                    {
+                        System.out.println("This book has been checked out.");
+                    }
+                }
+                else //the books are not in the library
+                {
+                    System.out.println("The book "+g+" could not be found.");
+                }
+                System.out.println(" ");
+            }
+            else if(f.compareTo("2")==0) // searches book by author
+            {
+                System.out.println("Which author would you like to look for?");
+                g = scan.next();
+                System.out.println(" ");
+                d.First();
+                k = 0;
+                String lori;
+                for(int n = 0;n<d.GetSize();n++) // goes through the linked list sequential sort like
+                {
+                    d.Next();
+                    if(d.GetValue().getname().compareTo(g)==0) // if this is the author
+                    {
+                        System.out.println("The author "+g+" has been found.");
+                        System.out.println("Here are the books they have written.");
+                        System.out.println(" ");
+                        d.GetValue().m.First();
+                        for(int u = 0; u < d.GetValue().m.GetSize();u++)
+                        {
+                                lori = d.GetValue().returnbooks();
+                                System.out.print(lori);
+                                if(a.searchstatus(lori)==true)
+                                {
+                                    System.out.println(" - Checked In");
+                                } 
+                                else
+                                {
+                                    System.out.println(" - Checked Out");
+                                }
+                                System.out.println("");
+                        }
+                        d.GetValue().returnbooks(); // prints books by the author
+                        System.out.println(" ");
+                        k++; // says author has been found
+                    }
+                }
+                if(k==0) // if author has not been found
+                {
+                    System.out.println("The author wannabe "+g+" could not be found.");
+                    System.out.println("");
+                }
+            }
+            else if(f.compareTo("3")==0) // lists book alphabetically by title
+            {
+                System.out.println("The books in this library, in alphabetical order, by title.");
+                System.out.println("");
+                a.inorder(); // inorder from binary tree
+                System.out.println(""); 
+            }
+            else if(f.compareTo("4")==0) // lists authors alphabetically
+            {
+                System.out.println("The authors that have their books in this library, in alpahetical order.");
+                System.out.println(" ");
+                for(int u = 0; u < d.GetSize(); u++) // for the length of the list
+                {
+                    System.out.println(v[u]); // prints the presorted array
+                }
+                System.out.println(" ");
+            }
+            else if(f.compareTo("5")==0) // returns books
+            {
+                System.out.println("How many books are you returning?");
+                g = scan.nextLine();
+                System.out.println("");
+                try
+                {
+                    x = Integer.parseInt(g);
+                }
+                catch(NumberFormatException hello)
+                {
+                    x=0;
+                }
+                for(int h = 0; h<x;h++ ) // puts books into stack
+                {
+                    System.out.println("What book are you returning? There are "+(x-h)+" books remaining");
+                    g = scan.nextLine();
+                    b.Push(g);
+                    System.out.println("");
+                }
+                while(x>0) // checks if books exist, pops to next book
+                {
+                    g=String.valueOf(b.Peek());
+                    if((a.search(g)==true)) // sees if book exist, then if book is there
+                    {
+                        if(a.searchstatus(g)==false)
+                        {
+            a.changestatus(g);
+                            System.out.println(g + " has been successfully checked in.");
+                            System.out.println(""); 
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("This book either does not exist, or was checked out.");
+                        System.out.println("Please check your spelling and try again.");
+                        System.out.println("");
+                    }
+                    b.Pop();
+                    x--;
+                }
+            }
+            else if(f.compareTo("6")==0) // checks out books
+            {
+                System.out.println("How many books are you checking out?");
+                g = scan.nextLine();
+                System.out.println("");
+                try
+                {
+                    x = Integer.parseInt(g);
+                }
+                catch(NumberFormatException hi)
+                {
+                    x=0;
+                }
+                for(int h = 0; h<x;h++ ) // puts books into stack
+                {
+                    System.out.println("What book are you checking out? There are "+(x-h)+" books remaining");
+                    g = scan.nextLine();
+                    b.Push(g);
+                    System.out.println("");
+                }
+                while(x>0) // checks if books exist, pops stack
+                {
+                    g = String.valueOf(b.Peek());
+                    if((a.search(g)==true)) 
+                    {
+                        if(a.searchstatus(g)==true)
+                        {
+                            a.changestatus(g);
+                            System.out.println(g + " has been successfully checked out.");
+                            System.out.println(""); 
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("This book either does not exist, or was already checked out.");
+                        System.out.println("Please ensure your spelling is correct.");
+                        System.out.println("Also ensure that this book came from this library.");
+                        System.out.println("");
+                    }
+                    b.Pop();
+                    x--;
+                }       
+            }
+            else if(f.compareTo("7") == 0) // ends program
+            {
+                try (PrintWriter out = new PrintWriter("output.txt")) //https://stackoverflow.com/questions/1053467/how-do-i-save-a-string-to-a-text-file-using-java
+		{
+		    for(int u = 0; u < z; u++) // prints the presorted array of books with updated checked in/out status
+                            {
+                                if(a.searchstatus(bookarray[u].gettitle()) == false)
+                                {
+                                    q = "0";
+                                }
+                                else
+                                {
+                                    q = "1";
+                                }
+				out.println(bookarray[u].gettitle()+", "+bookarray[u].getauthor()+", "+q+", "+bookarray[u].getvalue()); // prints to file
+			    }
+		    System.out.println("List has been added to 'output.txt.'");
+		    System.out.println(" ");
+		}
+		break;
+	    }
+			else if(f.compareTo("8")==0) // list books by priority
+			{
+				System.out.println("The library is on fire?");
+				System.out.println("Here is the order you should save the books.");
+				System.out.println(" ");
+				int crap = 0;
+				String crappening;
+				for(int u = 0; u <fireDrill.length; u++) // goes through presorted array
+				{
+					crappening = fireDrill[u].gettitle();
+					if(a.searchstatus(crappening)==true) // if the book is not checked out, prints 
+					{
+						System.out.println((crap+1) + ": " + fireDrill[u].gettitle());
+						crap++;
+					}
+				}
+				System.out.println("");
+			}
+			
+			else // invalid response was given
+			{
+				System.out.println("That is an invalid command. Please try again."); // user gives an invalid response
+				System.out.println("");
+			}	
+		}
+		// end of program 
+		System.out.println("Thank you for using the Sci Fi Li program.");
+		System.out.println("All books current statuses have been updated.");
+		System.out.println("Please, have a nice day");
+		System.out.println(""); 
+	}
+}
