@@ -1,0 +1,65 @@
+/**
+ * Kevin Doyon & Andrew Almond
+ * 11/9/18
+ */
+
+public class Books
+{
+	String booktitle;
+	String authorname;
+	boolean checkedin;
+	int value;
+
+	Books(String title, String author, int checked, int worth)
+	{
+		// book title
+		booktitle = title;
+		// book author
+		authorname = author;
+		// is book checked in/out
+		if(checked == 0)
+		{
+			checkedin = false;
+		}
+		else if (checked == 1)
+		{
+			checkedin = true;
+		}
+		// book priority
+		value = worth;
+	}
+	// only one setter needed
+	// for checked in/out
+	void setstatus()
+	{
+		if(checkedin==false)
+		{
+			checkedin = true;
+		}
+		else
+		{
+			checkedin = false;
+		}
+	}
+	// getters
+	// get book title
+	String gettitle()
+	{
+		return booktitle;
+	}
+	// get book author
+	String getauthor()
+	{
+		return authorname;
+	}
+	// get checked in/out
+	boolean getstatus() // change to boolean
+	{
+		return checkedin;
+	}
+	// get priority 
+	int getvalue()
+	{
+		return value;
+	}
+}
