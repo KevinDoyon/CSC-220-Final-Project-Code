@@ -1,0 +1,37 @@
+/**
+ * Kevin Doyon & Andrew Almond
+ * 11/9/18
+ */
+
+class Stack<String> extends List<String>
+{
+    Stack()
+    {
+        super();
+    }
+    void Push(String data)
+    {
+        super.InsertBefore(data);
+    }
+    void Pop()
+    {
+        super.Remove();
+    }
+    String Peek()
+    {
+        return (String)(super.GetValue());
+    }
+    boolean IsEmptys()
+    {
+        return super.IsEmpty();
+    }
+    boolean IsFulls()
+    {
+        return super.IsFull();
+    }
+    int GetSizes()
+    {
+        return super.GetSize();
+    }
+}
+
