@@ -1,0 +1,33 @@
+/**
+ * Kevin Doyon & Andrew Almond
+ * 11/9/18
+ */
+
+class Author
+{
+	// name of author
+	String name;
+	// list for book titles
+	List m = new List<Books>();
+	// creates author
+	Author(String authorname)
+	{
+		name = authorname;
+	}
+	// returns author name
+	String getname()
+	{
+		return name;
+	}
+	// adds book to the list
+	void addbook(String book)
+	{
+		m.InsertAfter(book);
+	}
+	// prints book in the array
+	String returnbooks()
+	{
+		m.Next();
+		return m.GetValue().toString();
+	}
+}
